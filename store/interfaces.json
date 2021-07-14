@@ -3,8 +3,8 @@
     "component": "ProductImages",
     "composition": "children"
   },
-  "product-images.main-swiper": {
-    "component": "ProductImageMainSwiper"
+  "product-images-swiper": {
+    "component": "MainImageSwiper"
   },
   "complement-name": {
     "component": "ComplementName"

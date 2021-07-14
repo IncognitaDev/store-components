@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { Component } from 'react'
+import React, { Component, useContext } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { path, equals } from 'ramda'
@@ -40,7 +40,19 @@ const initialState = {
   activeIndex: 0,
 }
 
-export const CarouselContext = React.createContext({})
+export const CarouselContext = React.createContext(undefined)
+
+export function useCarouselContext() {
+  const context = useContext(CarouselContext)
+
+  if (context === undefined) {
+    throw Error(
+      'CarouselContext should be in the react tree. Maybe you are trying to use Carousel component https://developers.vtex.com/vtex-developer-docs/docs/vtex-store-components-productimages'
+    )
+  }
+
+  return context
+}
 
 class Carousel extends Component {
   state = {
@@ -182,8 +194,6 @@ class Carousel extends Component {
     }
   }
 
-
-
   get galleryParams() {
     const { handles, slides = [], showPaginationDots = true } = this.props
 
@@ -235,7 +245,6 @@ class Carousel extends Component {
       showNavigationArrows = true,
       displayThumbnailsArrows = false,
     } = this.props
-
 
     const hasSlides = slides && slides.length > 0
 
@@ -300,35 +309,37 @@ class Carousel extends Component {
     const contextValues = {
       onGallerySwiper: instance => this.setState({ gallerySwiper: instance }),
       onThumbSwiper: instance => this.setState({ thumbSwiper: instance }),
-      isThumbsVertical: isThumbsVertical,
-      thumbnailAspectRatio: thumbnailAspectRatio,
-      thumbnailMaxHeight: thumbnailMaxHeight,
+      isThumbsVertical,
+      thumbnailAspectRatio,
+      thumbnailMaxHeight,
       thumbUrls: this.state.thumbUrl,
-      displayThumbnailsArrows: displayThumbnailsArrows,
-      slides: slides,
-      position: position,
+      displayThumbnailsArrows,
+      slides,
+      position,
       threshold: 10,
       resistanceRatio: slides.length > 1 ? 0.85 : 0,
       onSlideChange: this.handleSlideChange,
       renderSlide: this.renderSlide,
-      showPaginationDots: showPaginationDots,
-      showNavigationArrows: showNavigationArrows,
-      galleryParams: this.galleryParams
+      showPaginationDots,
+      showNavigationArrows,
+      galleryParams: this.galleryParams,
     }
 
     return (
       <CarouselContext.Provider value={contextValues}>
         <div className={containerClasses} aria-hidden="true">
-
-          {isThumbsVertical && (<ThumbnailSwiper />)}
+          {isThumbsVertical && <ThumbnailSwiper />}
           <div className={imageClasses}>
             {!this.state.thumbSwiper?.destroyed &&
-              (this.props.children.length > 0 ? (this.props.children) : <MainImageSwiper />)
-            }
-            {!isThumbsVertical && (<ThumbnailSwiper />)}
+              (this.props.children.length > 0 ? (
+                this.props.children
+              ) : (
+                <MainImageSwiper />
+              ))}
+            {!isThumbsVertical && <ThumbnailSwiper />}
           </div>
         </div>
-      </CarouselContext.Provider >
+      </CarouselContext.Provider>
     )
   }
 }
