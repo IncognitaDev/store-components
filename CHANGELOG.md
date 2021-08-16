@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.151.0] - 2021-08-16
+
 ## [3.150.0] - 2021-08-06
 + ### Fixed
 - Highlight deprecated components on `README.md`: `Animation`, `Categories Highlights`, `Collection Badges`, `Container`, `Discount Badge`, `Gradient Collapse`, `Greeting`and `Slider`.
